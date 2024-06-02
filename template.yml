@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: >
+  SAM Template for Flask Application
+
+Globals:
+  Function:
+    Timeout: 30
+
+Resources:
+  FlaskFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: wsgi_handler.handler
+      Runtime: python3.9
+      CodeUri: .
+      MemorySize: 512
+      Environment:
+        Variables:
+          FLASK_ENV: development
+      Events:
+        ProvaCorrecao:
+          Type: Api
+          Properties:
+            Path: /prova/correcao
+            Method: post
+        ProvaRecorrecao:
+          Type: Api
+          Properties:
+            Path: /prova/recorrecao
+            Method: post
+            
