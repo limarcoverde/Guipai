@@ -1,0 +1,9 @@
+com/guipAI/Api/service/PromptService.class
+com/guipAI/Api/config/WebMvcConfig.class
+com/guipAI/Api/model/PromptResponse.class
+com/guipAI/Api/ApiApplication.class
+com/guipAI/Api/model/PromptRequest.class
+com/guipAI/Api/config/JwtRequestFilter.class
+com/guipAI/Api/config/JwtAuthenticationEntryPoint.class
+com/guipAI/Api/config/SecurityConfiguration.class
+com/guipAI/Api/controller/GeminiController.class

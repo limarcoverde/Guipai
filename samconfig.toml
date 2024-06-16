@@ -1,0 +1,9 @@
+version = 0.1
+[default.deploy.parameters]
+s3_bucket = "wasa-api"
+stack_name = "test-marcelo"
+s3_prefix = "test-marcelo"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+resolve_s3 = false
+image_repositories = []

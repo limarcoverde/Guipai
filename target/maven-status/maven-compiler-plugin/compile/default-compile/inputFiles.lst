@@ -1,0 +1,9 @@
+/Users/arcoverde/Downloads/Api/src/main/java/com/guipAI/Api/config/JwtAuthenticationEntryPoint.java
+/Users/arcoverde/Downloads/Api/src/main/java/com/guipAI/Api/model/PromptRequest.java
+/Users/arcoverde/Downloads/Api/src/main/java/com/guipAI/Api/service/PromptService.java
+/Users/arcoverde/Downloads/Api/src/main/java/com/guipAI/Api/config/SecurityConfiguration.java
+/Users/arcoverde/Downloads/Api/src/main/java/com/guipAI/Api/controller/GeminiController.java
+/Users/arcoverde/Downloads/Api/src/main/java/com/guipAI/Api/ApiApplication.java
+/Users/arcoverde/Downloads/Api/src/main/java/com/guipAI/Api/config/WebMvcConfig.java
+/Users/arcoverde/Downloads/Api/src/main/java/com/guipAI/Api/config/JwtRequestFilter.java
+/Users/arcoverde/Downloads/Api/src/main/java/com/guipAI/Api/model/PromptResponse.java

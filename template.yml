@@ -1,32 +1,64 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
-Description: >
-  SAM Template for Flask Application
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
 
 Globals:
   Function:
-    Timeout: 30
+    Timeout: 60
+
+Parameters:
+  ApiGatewayId:
+    Type: String
+    Description: The ID of the API Gateway
+  ApiGatewayRootResourceId:
+    Type: String
+    Description: The Root Resource ID of the API Gateway
 
 Resources:
-  FlaskFunction:
-    Type: 'AWS::Serverless::Function'
+  ClientsCreateApiFunction:
+    Type: AWS::Serverless::Function
     Properties:
-      Handler: wsgi_handler.handler
-      Runtime: python3.9
+      FunctionName: !Sub "test-marcelo"
       CodeUri: .
-      MemorySize: 512
+      Handler: com.guipAI.Api.StreamLambdaHandler::handleRequest
+      Runtime: java17
+      Architectures:
+        - x86_64
+      MemorySize: 1024
       Environment:
         Variables:
-          FLASK_ENV: development
-      Events:
-        ProvaCorrecao:
-          Type: Api
-          Properties:
-            Path: /prova/correcao
-            Method: post
-        ProvaRecorrecao:
-          Type: Api
-          Properties:
-            Path: /prova/recorrecao
-            Method: post
-            
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+
+  #/api/prompt
+  clientApiResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !Ref ApiGatewayRootResourceId
+      RestApiId: !Ref ApiGatewayId
+      PathPart: "api"
+
+  ClientsCreateApiResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !Ref clientApiResource
+      RestApiId: !Ref ApiGatewayId
+      PathPart: "prompt"
+
+  ClientsCreateApiMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !Ref ClientsCreateApiResource
+      RestApiId: !Ref ApiGatewayId
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ClientsCreateApiFunction.Arn}/invocations
+
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt ClientsCreateApiFunction.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayId}/*/POST/api/prompt
